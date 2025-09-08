@@ -1,0 +1,69 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=5
+
+[application]
+
+config/name="Stellar Evolution Visualizer"
+config/name_localized={
+"en_GB": "Stellar Evolution Visualiser"
+}
+config/description="This is NOT a simulation. Visualizes stellar evolution via Starpasta, a python script and executable file provided by this Github: https://github.com/hersfeldtn/Starpasta/releases
+More information here: https://worldbuildingpasta.blogspot.com/2022/11/an-apple-pie-from-scratch-part-ii.html
+Star colors (from 2300-52500 K): https://arxiv.org/abs/2101.06254"
+config/version="0.9.9 Beta"
+run/main_scene="uid://fphf2bna8enm"
+config/use_custom_user_dir=true
+config/custom_user_dir_name="GDStarpasta"
+config/features=PackedStringArray("4.4", "Forward Plus")
+config/icon="uid://bd7w7853cb6y"
+
+[autoload]
+
+StarColors="*res://global/star_colors.gd"
+Constants="*res://global/constants.gd"
+HelperFunctions="*res://global/helper_functions.gd"
+Debug="*res://global/debug.gd"
+
+[debug]
+
+gdscript/warnings/unused_variable=0
+
+[display]
+
+window/size/viewport_width=1280
+window/size/viewport_height=720
+window/stretch/mode="canvas_items"
+
+[importer_defaults]
+
+image={}
+
+[input]
+
+zoom_in={
+"deadzone": 0.2,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":61,"key_label":0,"unicode":61,"location":0,"echo":false,"script":null)
+]
+}
+zoom_out={
+"deadzone": 0.2,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":45,"key_label":0,"unicode":45,"location":0,"echo":false,"script":null)
+]
+}
+reset_zoom={
+"deadzone": 0.2,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":72,"key_label":0,"unicode":104,"location":0,"echo":false,"script":null)
+]
+}
+
+[rendering]
+
+viewport/hdr_2d=true
+environment/defaults/default_clear_color=Color(0, 0, 0, 1)

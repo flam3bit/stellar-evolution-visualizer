@@ -1,0 +1,78 @@
+[gd_scene load_steps=3 format=3 uid="uid://c2563kagoxr2m"]
+
+[ext_resource type="Script" uid="uid://ms3ueejlhgdm" path="res://scripts/planet_infobox.gd" id="1_0cybl"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0cybl"]
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 1, 1, 1)
+
+[node name="PlanetInfobox" type="Control"]
+custom_minimum_size = Vector2(126, 91)
+layout_mode = 3
+anchor_right = 0.0984375
+anchor_bottom = 0.126389
+script = ExtResource("1_0cybl")
+metadata/_edit_group_ = true
+metadata/_edit_use_anchors_ = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="BoxTitle" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "Planet Name"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ColorBG" type="ColorRect" parent="VBoxContainer/BoxTitle"]
+z_index = -1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.262745, 0.568627, 0.717647, 1)
+metadata/_edit_use_anchors_ = true
+
+[node name="BoxPanel" type="Panel" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_0cybl")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/BoxPanel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.015625
+anchor_top = 0.0163934
+anchor_right = 0.984375
+anchor_bottom = 0.978142
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="SemiMajorAxis" type="Label" parent="VBoxContainer/BoxPanel/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 6
+theme_override_font_sizes/font_size = 15
+text = "1.0 AU"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="OrbitalPeriod" type="Label" parent="VBoxContainer/BoxPanel/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 6
+theme_override_font_sizes/font_size = 15
+text = "1.0 years"
+horizontal_alignment = 1
+vertical_alignment = 1
