@@ -19,7 +19,7 @@ More information [here](https://worldbuildingpasta.blogspot.com/2022/11/an-apple
 [Star colors (table 5)](https://arxiv.org/abs/2101.06254)
 ### Preview (Solar System)
 Inner (Mercury, Venus, Earth, Mars)
-![The inner solar system](/showcase/2025-09-10T08:30:30.png)
+![The inner solar system](/showcase/D%202025-09-10%20T%2008-30-30.png)
 
 Outer (Jupiter, Saturn, Uranus, Neptune)
-![The outer solar system](/showcase/2025-09-10T08:30:33.png)
+![The outer solar system](/showcase/D%202025-09-10%20T%2008-30-33.png)
