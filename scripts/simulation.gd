@@ -134,7 +134,7 @@ func set_years_text(year:float):
 			ctnum = 1
 		
 		var rounded_ct = "%.{0}f".format([ctnum]) % curtime
-		$Years/Control/DiffLabel.text = "Current time: {0}".format([rounded_ct]) 
+		$Years/Control/DiffLabel.text = "Current time: {0} Ma".format([rounded_ct]) 
 
 var lnum = 4
 func set_lum_text(luminosity:float):
@@ -381,6 +381,13 @@ func _unhandled_key_input(event: InputEvent) -> void:
 					$NonMoving/DisableControls.visible = true
 					$NonMoving/DisableControlsTimer.start()
 					dd = 1
+			KEY_L:
+				hide_ui()
+
+func hide_ui():
+	for node in self.get_children():
+		print(HelperFunctions.get_type(node))
+
 
 func _on_disable_controls_timer_timeout() -> void:
 	$NonMoving/DisableControls.visible = false
