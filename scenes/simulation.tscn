@@ -544,7 +544,6 @@ script = ExtResource("5_mwrr7")
 environment = ExtResource("12_khgle")
 
 [connection signal="transmit_star_data" from="." to="Star" method="_on_simulation_transmit_star_data"]
-[connection signal="changed_stage" from="Star" to="." method="_on_star_changed_stage"]
 [connection signal="pressed" from="UI/StarProperties/QuitButton" to="." method="_on_quit_button_pressed"]
 [connection signal="toggled" from="Years/Control/PauseButton" to="." method="_pause_play"]
 [connection signal="timeout" from="NonMoving/DisableControlsTimer" to="." method="_on_disable_controls_timer_timeout"]

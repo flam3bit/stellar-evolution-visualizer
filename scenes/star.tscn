@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://ctqyf16ytpqp"]
 
-[ext_resource type="Script" uid="uid://bjvmqxgxoctxo" path="res://scripts/starsim.gd" id="1_mcqwg"]
+[ext_resource type="Script" uid="uid://bjvmqxgxoctxo" path="res://scripts/star.gd" id="1_mcqwg"]
 
 [node name="Star" type="Node2D"]
 modulate = Color(2, 2, 2, 1)

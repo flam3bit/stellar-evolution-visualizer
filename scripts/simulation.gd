@@ -62,7 +62,7 @@ func _process(delta: float) -> void:
 	hz_view.set_hz(hz)
 	scale_mult = orig_mass / cur_mass
 	
-	if $Star.stage > Star.He_WD:
+	if $Star.stage > StarBase.He_WD:
 		$UI/StarProperties/QuitButton.visible = true
 	
 	if enable_orbits:
