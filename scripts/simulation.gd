@@ -364,6 +364,7 @@ func _pause_play(toggled:bool):
 		pause.text = "Pause"
 
 var dd = 1
+var h_ui = 1
 func _unhandled_key_input(event: InputEvent) -> void:
 	if event.is_pressed():
 		var key = event.keycode
@@ -382,12 +383,17 @@ func _unhandled_key_input(event: InputEvent) -> void:
 					$NonMoving/DisableControlsTimer.start()
 					dd = 1
 			KEY_L:
-				hide_ui()
+				h_ui += 1
+				if h_ui % 2 == 0:
+					ui_visible(false)
+				else:
+					ui_visible(true)
+					h_ui = 1
 
-func hide_ui():
-	for node in self.get_children():
-		print(HelperFunctions.get_type(node))
-
+func ui_visible(toggled:bool):
+	$UI.visible = toggled
+	$NonMoving.visible = toggled
+	$Infoboxes.visible = toggled
 
 func _on_disable_controls_timer_timeout() -> void:
 	$NonMoving/DisableControls.visible = false

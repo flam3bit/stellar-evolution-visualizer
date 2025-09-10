@@ -22,6 +22,9 @@ func _ready() -> void:
 	if !user_dir.dir_exists("star_config"):
 		user_dir.make_dir("star_config")
 	
+	if !user_dir.dir_exists("screenshots"):
+		user_dir.make_dir("screenshots")
+	
 	## TODO: i poop
 	var csv_input := DirAccess.open("user://input_files")
 	
