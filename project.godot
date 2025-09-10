@@ -22,7 +22,7 @@ run/main_scene="uid://fphf2bna8enm"
 config/use_custom_user_dir=true
 config/custom_user_dir_name="GDStarpasta"
 config/features=PackedStringArray("4.4", "Forward Plus")
-config/icon="uid://bd7w7853cb6y"
+config/icon="uid://br2lrxyorbv7d"
 
 [autoload]
 
