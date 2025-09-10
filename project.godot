@@ -17,7 +17,7 @@ config/name_localized={
 config/description="This is NOT a simulation. Visualizes stellar evolution via Starpasta, a python script and executable file provided by this Github: https://github.com/hersfeldtn/Starpasta/releases
 More information here: https://worldbuildingpasta.blogspot.com/2022/11/an-apple-pie-from-scratch-part-ii.html
 Star colors (from 2300-52500 K): https://arxiv.org/abs/2101.06254"
-config/version="0.9.9 Beta"
+config/version="0.9.9"
 run/main_scene="uid://fphf2bna8enm"
 config/use_custom_user_dir=true
 config/custom_user_dir_name="GDStarpasta"
