@@ -1,0 +1,35 @@
+[gd_scene load_steps=3 format=3 uid="uid://bbibjinsh1hh3"]
+
+[ext_resource type="Script" uid="uid://6mkoje3auhr6" path="res://scripts/star_button.gd" id="1_6krwq"]
+[ext_resource type="Texture2D" uid="uid://bd7w7853cb6y" path="res://star/menu_icon.svg" id="2_rcqh4"]
+
+[node name="StarButton" type="Button"]
+anchors_preset = -1
+anchor_right = 0.2
+anchor_bottom = 0.177778
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_stretch_ratio = 5.0
+text = "[Unnamed Star]
+Mass: 1.0☉
+Metallicity: 0.02
+Temperature: 5778 K"
+alignment = 2
+script = ExtResource("1_6krwq")
+metadata/_edit_use_anchors_ = true
+
+[node name="AspectRatioContainer" type="AspectRatioContainer" parent="."]
+layout_mode = 0
+anchor_left = 0.046875
+anchor_right = 0.328125
+anchor_bottom = 0.999999
+metadata/_edit_group_ = true
+metadata/_edit_use_anchors_ = true
+
+[node name="StarIcn" type="TextureRect" parent="AspectRatioContainer"]
+layout_mode = 2
+texture = ExtResource("2_rcqh4")
+expand_mode = 2
+metadata/_edit_use_anchors_ = true
+
+[connection signal="pressed" from="." to="." method="_on_pressed"]

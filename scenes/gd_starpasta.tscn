@@ -1,0 +1,16 @@
+[gd_scene load_steps=4 format=3 uid="uid://fphf2bna8enm"]
+
+[ext_resource type="Script" uid="uid://hh8ww0ho255l" path="res://scripts/gd_starpasta.gd" id="1_xbaj5"]
+[ext_resource type="PackedScene" uid="uid://sy114duyhg3r" path="res://scenes/simulation.tscn" id="2_ognp1"]
+[ext_resource type="PackedScene" uid="uid://v57y5nfw1qip" path="res://scenes/main_menu.tscn" id="3_bklga"]
+
+[node name="GDStarpasta" type="Node"]
+script = ExtResource("1_xbaj5")
+
+[node name="Simulation" parent="." instance=ExtResource("2_ognp1")]
+
+[node name="MainMenu" parent="." instance=ExtResource("3_bklga")]
+
+[connection signal="child_order_changed" from="." to="Simulation" method="_on_gd_starpasta_child_order_changed"]
+[connection signal="toggle_orbits" from="MainMenu" to="Simulation" method="_on_main_menu_toggle_orbits"]
+[connection signal="transmit_data" from="MainMenu" to="Simulation" method="_on_main_menu_transmit_data"]

@@ -1,0 +1,550 @@
+[gd_scene load_steps=23 format=3 uid="uid://sy114duyhg3r"]
+
+[ext_resource type="Script" uid="uid://lapjx5p4mtjp" path="res://scripts/simulation.gd" id="1_5eski"]
+[ext_resource type="PackedScene" uid="uid://ctqyf16ytpqp" path="res://scenes/star.tscn" id="2_ik8a0"]
+[ext_resource type="PackedScene" uid="uid://c2563kagoxr2m" path="res://scenes/planet_infobox.tscn" id="2_o1k16"]
+[ext_resource type="PackedScene" uid="uid://k5jyd3jsolhb" path="res://scenes/one_year_orbit.tscn" id="3_ehfb2"]
+[ext_resource type="Script" uid="uid://cfvo7wl5go4hf" path="res://scripts/bbcode/temperature_bbcode.gd" id="3_ik8a0"]
+[ext_resource type="PackedScene" uid="uid://cmqq0352v54xg" path="res://scenes/planet_orbit.tscn" id="3_it44y"]
+[ext_resource type="PackedScene" uid="uid://c2dx00wea0w36" path="res://scenes/habitable_zone.tscn" id="4_it44y"]
+[ext_resource type="Texture2D" uid="uid://bd7w7853cb6y" path="res://star/menu_icon.svg" id="4_ljsjv"]
+[ext_resource type="Script" uid="uid://cie8v41n5w6ap" path="res://scripts/camera.gd" id="5_mwrr7"]
+[ext_resource type="Texture2D" uid="uid://hqqiscjs5nje" path="res://pictures/nature-stars-galaxy-wallpaper-preview-274452881.jpg" id="6_gimvv"]
+[ext_resource type="AudioStream" uid="uid://dusnolqdojra" path="res://sounds/exploison.ogg" id="11_it44y"]
+[ext_resource type="Environment" uid="uid://dpgj2a52u6iug" path="res://resorces/glow.tres" id="12_khgle"]
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_ljsjv"]
+script = ExtResource("3_ik8a0")
+metadata/_custom_type_script = "uid://cfvo7wl5go4hf"
+
+[sub_resource type="InputEventKey" id="InputEventKey_gimvv"]
+device = -1
+keycode = 32
+unicode = 32
+
+[sub_resource type="Shortcut" id="Shortcut_ehfb2"]
+events = [SubResource("InputEventKey_gimvv")]
+
+[sub_resource type="Animation" id="Animation_ehfb2"]
+resource_name = "TextFade"
+length = 3.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("NowPlaying:self_modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_1hwtu"]
+_data = {
+&"TextFade": SubResource("Animation_ehfb2")
+}
+
+[sub_resource type="Animation" id="Animation_ljsjv"]
+resource_name = "UIMove"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(0.3, 1),
+"update": 0,
+"values": [Vector2(384, 0), Vector2(0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../Infoboxes:offset")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(0.3, 1),
+"update": 0,
+"values": [Vector2(-300, 0), Vector2(0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_gimvv"]
+resource_name = "YearMove"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../Years:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(0.3, 1),
+"update": 0,
+"values": [Vector2(0, 70.815), Vector2(0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_gimvv"]
+_data = {
+&"UIMove": SubResource("Animation_ljsjv"),
+&"YearMove": SubResource("Animation_gimvv")
+}
+
+[sub_resource type="Animation" id="Animation_o1k16"]
+resource_name = "Supernova"
+length = 5.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_it44y"]
+_data = {
+&"Supernova": SubResource("Animation_o1k16")
+}
+
+[node name="Simulation" type="Node2D"]
+script = ExtResource("1_5eski")
+infobox_scene = ExtResource("2_o1k16")
+orbit_scene = ExtResource("3_it44y")
+
+[node name="HabitableZone" parent="." instance=ExtResource("4_it44y")]
+
+[node name="OneYearOrbit" parent="." instance=ExtResource("3_ehfb2")]
+visible = false
+position = Vector2(640, 360)
+
+[node name="Orbits" type="Node" parent="."]
+
+[node name="Star" parent="." instance=ExtResource("2_ik8a0")]
+
+[node name="StarPos" type="Marker2D" parent="."]
+position = Vector2(640, 360)
+
+[node name="UI" type="CanvasLayer" parent="."]
+offset = Vector2(384, 0)
+transform = Transform2D(1, 0, 0, 1, 384, 0)
+
+[node name="StarProperties" type="VBoxContainer" parent="UI"]
+anchors_preset = -1
+anchor_left = 0.696875
+anchor_top = 0.00555556
+anchor_right = 0.996875
+anchor_bottom = 0.469444
+metadata/_edit_group_ = true
+metadata/_edit_use_anchors_ = true
+
+[node name="Label" type="Label" parent="UI/StarProperties"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "Star Properties"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="StarName" type="Label" parent="UI/StarProperties"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 25
+text = "[Unnamed Star]"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="TemperatureText" type="RichTextLabel" parent="UI/StarProperties"]
+clip_contents = false
+layout_mode = 2
+bbcode_enabled = true
+text = "[temp]Effective Temperature[/temp]"
+fit_content = true
+scroll_active = false
+horizontal_alignment = 2
+vertical_alignment = 1
+custom_effects = [SubResource("RichTextEffect_ljsjv")]
+
+[node name="StarTemp" type="RichTextLabel" parent="UI/StarProperties"]
+clip_contents = false
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 30
+bbcode_enabled = true
+text = "[color=feede6]5778 K[/color]"
+fit_content = true
+horizontal_alignment = 2
+
+[node name="LumText" type="RichTextLabel" parent="UI/StarProperties"]
+clip_contents = false
+layout_mode = 2
+bbcode_enabled = true
+text = "[color=yellow]Luminosity[/color]"
+fit_content = true
+scroll_active = false
+horizontal_alignment = 2
+vertical_alignment = 1
+custom_effects = [SubResource("RichTextEffect_ljsjv")]
+
+[node name="StarLum" type="RichTextLabel" parent="UI/StarProperties"]
+clip_contents = false
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 30
+bbcode_enabled = true
+text = "[color=yellow]1.00L☉[/color]"
+fit_content = true
+scroll_active = false
+horizontal_alignment = 2
+vertical_alignment = 1
+custom_effects = [SubResource("RichTextEffect_ljsjv")]
+
+[node name="RadText" type="RichTextLabel" parent="UI/StarProperties"]
+clip_contents = false
+layout_mode = 2
+bbcode_enabled = true
+text = "[color=chartreuse]Radius[/color]"
+fit_content = true
+scroll_active = false
+horizontal_alignment = 2
+vertical_alignment = 1
+custom_effects = [SubResource("RichTextEffect_ljsjv")]
+
+[node name="StarRad" type="RichTextLabel" parent="UI/StarProperties"]
+clip_contents = false
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 30
+bbcode_enabled = true
+text = "[color=chartreuse]1.00R☉[/color]"
+fit_content = true
+scroll_active = false
+horizontal_alignment = 2
+vertical_alignment = 1
+custom_effects = [SubResource("RichTextEffect_ljsjv")]
+
+[node name="MassText" type="RichTextLabel" parent="UI/StarProperties"]
+clip_contents = false
+layout_mode = 2
+bbcode_enabled = true
+text = "[color=deepskyblue]Mass[/color]"
+fit_content = true
+scroll_active = false
+horizontal_alignment = 2
+vertical_alignment = 1
+custom_effects = [SubResource("RichTextEffect_ljsjv")]
+
+[node name="StarMass" type="RichTextLabel" parent="UI/StarProperties"]
+clip_contents = false
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 30
+bbcode_enabled = true
+text = "[color=deepskyblue]1.00M☉[/color]"
+fit_content = true
+scroll_active = false
+horizontal_alignment = 2
+vertical_alignment = 1
+custom_effects = [SubResource("RichTextEffect_ljsjv")]
+
+[node name="DistTxt" type="RichTextLabel" parent="UI/StarProperties"]
+visible = false
+clip_contents = false
+layout_mode = 2
+bbcode_enabled = true
+text = "[color=crimson]Distance needed to orbit a year[/color]"
+fit_content = true
+scroll_active = false
+horizontal_alignment = 2
+vertical_alignment = 1
+custom_effects = [SubResource("RichTextEffect_ljsjv")]
+
+[node name="PlanetDist" type="RichTextLabel" parent="UI/StarProperties"]
+visible = false
+clip_contents = false
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 30
+bbcode_enabled = true
+text = "[color=crimson]1.00 AU[/color]"
+fit_content = true
+scroll_active = false
+horizontal_alignment = 2
+vertical_alignment = 1
+custom_effects = [SubResource("RichTextEffect_ljsjv")]
+
+[node name="HZText" type="RichTextLabel" parent="UI/StarProperties"]
+clip_contents = false
+layout_mode = 2
+bbcode_enabled = true
+text = "[color=mediumseagreen]Extent of Habitable Zone[/color]"
+fit_content = true
+scroll_active = false
+horizontal_alignment = 2
+vertical_alignment = 1
+custom_effects = [SubResource("RichTextEffect_ljsjv")]
+
+[node name="HZBounds" type="RichTextLabel" parent="UI/StarProperties"]
+clip_contents = false
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 30
+bbcode_enabled = true
+text = "[color=mediumseagreen]0.99 AU-1.67 AU[/color]"
+fit_content = true
+scroll_active = false
+horizontal_alignment = 2
+vertical_alignment = 1
+custom_effects = [SubResource("RichTextEffect_ljsjv")]
+
+[node name="EvolutionaryStage" type="RichTextLabel" parent="UI/StarProperties"]
+clip_contents = false
+layout_mode = 2
+bbcode_enabled = true
+text = "[color=violet]Evolutionary Stage[/color]"
+fit_content = true
+scroll_active = false
+horizontal_alignment = 2
+vertical_alignment = 1
+custom_effects = [SubResource("RichTextEffect_ljsjv")]
+
+[node name="StarStage" type="RichTextLabel" parent="UI/StarProperties"]
+clip_contents = false
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 30
+bbcode_enabled = true
+text = "[color=violet]Main Sequence[/color]"
+fit_content = true
+scroll_active = false
+horizontal_alignment = 2
+vertical_alignment = 1
+custom_effects = [SubResource("RichTextEffect_ljsjv")]
+
+[node name="QuitButton" type="Button" parent="UI/StarProperties"]
+visible = false
+layout_mode = 2
+text = "Press R to return to main menu"
+flat = true
+
+[node name="Years" type="CanvasLayer" parent="."]
+layer = 0
+offset = Vector2(0, 70.815)
+transform = Transform2D(1, 0, 0, 1, 0, 70.815)
+
+[node name="Control" type="Control" parent="Years"]
+layout_mode = 3
+anchors_preset = 0
+offset_top = 640.0
+offset_right = 1280.0
+offset_bottom = 716.0
+
+[node name="YearLabel" type="Label" parent="Years/Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -3.5
+offset_bottom = 3.5
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 60
+text = "0.0 Ma"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PauseButton" type="Button" parent="Years/Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.025
+anchor_right = 0.1
+anchor_bottom = 1.0
+grow_vertical = 2
+size_flags_vertical = 3
+mouse_filter = 1
+toggle_mode = true
+shortcut = SubResource("Shortcut_ehfb2")
+text = "Pause"
+metadata/_edit_use_anchors_ = true
+
+[node name="ScaleLabel" type="Label" parent="Years/Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 160.0
+offset_top = 32.0
+offset_right = -960.0
+offset_bottom = -12.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Zoom: 100%"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="DiffLabel" type="Label" parent="Years/Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.625
+anchor_top = 0.421053
+anchor_right = 0.85
+anchor_bottom = 0.842105
+grow_horizontal = 0
+grow_vertical = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 20
+text = "Current time: -200 Ma"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="GlowCalibrator" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(640, 360)
+scale = Vector2(0.132103, 0.132103)
+texture = ExtResource("4_ljsjv")
+
+[node name="BG" type="CanvasLayer" parent="."]
+layer = -1
+
+[node name="TextureRect" type="TextureRect" parent="BG"]
+modulate = Color(0.5, 0.5, 0.5, 1)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("6_gimvv")
+expand_mode = 1
+flip_v = true
+metadata/_edit_use_anchors_ = true
+
+[node name="NonMoving" type="CanvasLayer" parent="."]
+
+[node name="DisableControls" type="Label" parent="NonMoving"]
+visible = false
+anchors_preset = -1
+anchor_left = 0.075
+anchor_top = 0.888889
+anchor_right = 0.25
+anchor_bottom = 0.931944
+text = "Disabled controls!"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="DisableControlsTimer" type="Timer" parent="NonMoving"]
+one_shot = true
+
+[node name="NowPlaying" type="Label" parent="NonMoving"]
+visible = false
+anchors_preset = -1
+anchor_left = 0.025
+anchor_top = 0.0444444
+anchor_right = 0.175
+anchor_bottom = 0.0875
+text = "NOW PLAYING: Music"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="NPA" type="AnimationPlayer" parent="NonMoving"]
+libraries = {
+&"": SubResource("AnimationLibrary_1hwtu")
+}
+
+[node name="Infoboxes" type="CanvasLayer" parent="."]
+layer = 0
+offset = Vector2(-300, 0)
+transform = Transform2D(1, 0, 0, 1, -300, 0)
+
+[node name="InfoboxContainer" type="VFlowContainer" parent="Infoboxes"]
+anchors_preset = -1
+anchor_left = 0.025
+anchor_top = 0.0888889
+anchor_right = 0.121875
+anchor_bottom = 0.977778
+last_wrap_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="PlanetInfobox" parent="Infoboxes/InfoboxContainer" instance=ExtResource("2_o1k16")]
+layout_mode = 2
+
+[node name="PlanetInfobox2" parent="Infoboxes/InfoboxContainer" instance=ExtResource("2_o1k16")]
+layout_mode = 2
+
+[node name="PlanetInfobox3" parent="Infoboxes/InfoboxContainer" instance=ExtResource("2_o1k16")]
+layout_mode = 2
+
+[node name="PlanetInfobox4" parent="Infoboxes/InfoboxContainer" instance=ExtResource("2_o1k16")]
+layout_mode = 2
+
+[node name="PlanetInfobox5" parent="Infoboxes/InfoboxContainer" instance=ExtResource("2_o1k16")]
+layout_mode = 2
+
+[node name="PlanetInfobox6" parent="Infoboxes/InfoboxContainer" instance=ExtResource("2_o1k16")]
+layout_mode = 2
+
+[node name="PlanetInfobox7" parent="Infoboxes/InfoboxContainer" instance=ExtResource("2_o1k16")]
+layout_mode = 2
+
+[node name="PlanetInfobox8" parent="Infoboxes/InfoboxContainer" instance=ExtResource("2_o1k16")]
+layout_mode = 2
+
+[node name="PlanetInfobox9" parent="Infoboxes/InfoboxContainer" instance=ExtResource("2_o1k16")]
+layout_mode = 2
+
+[node name="PlanetInfobox10" parent="Infoboxes/InfoboxContainer" instance=ExtResource("2_o1k16")]
+layout_mode = 2
+
+[node name="PlanetInfobox11" parent="Infoboxes/InfoboxContainer" instance=ExtResource("2_o1k16")]
+layout_mode = 2
+
+[node name="PlanetInfobox12" parent="Infoboxes/InfoboxContainer" instance=ExtResource("2_o1k16")]
+layout_mode = 2
+
+[node name="SupernovaLayer" type="CanvasLayer" parent="."]
+visible = false
+
+[node name="Supernova" type="ColorRect" parent="SupernovaLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+root_node = NodePath("../UI")
+libraries = {
+&"": SubResource("AnimationLibrary_gimvv")
+}
+
+[node name="SupernovaPlayer" type="AnimationPlayer" parent="."]
+root_node = NodePath("../SupernovaLayer/Supernova")
+libraries = {
+&"": SubResource("AnimationLibrary_it44y")
+}
+
+[node name="Explosion" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("11_it44y")
+
+[node name="Camera" type="Camera2D" parent="."]
+position = Vector2(640, 360)
+ignore_rotation = false
+drag_left_margin = 1.0
+drag_top_margin = 1.0
+drag_right_margin = 1.0
+drag_bottom_margin = 1.0
+editor_draw_limits = true
+editor_draw_drag_margin = true
+script = ExtResource("5_mwrr7")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = ExtResource("12_khgle")
+
+[connection signal="transmit_star_data" from="." to="Star" method="_on_simulation_transmit_star_data"]
+[connection signal="pressed" from="UI/StarProperties/QuitButton" to="." method="_on_quit_button_pressed"]
+[connection signal="toggled" from="Years/Control/PauseButton" to="." method="_pause_play"]
+[connection signal="timeout" from="NonMoving/DisableControlsTimer" to="." method="_on_disable_controls_timer_timeout"]
+[connection signal="animation_finished" from="NonMoving/NPA" to="." method="_on_npa_animation_finished"]

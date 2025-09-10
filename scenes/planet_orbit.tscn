@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://cmqq0352v54xg"]
+
+[ext_resource type="Script" uid="uid://bvh6lrmvus1sm" path="res://scripts/planet_orbit.gd" id="1_ujsno"]
+
+[node name="PlanetOrbit" type="Node2D"]
+script = ExtResource("1_ujsno")

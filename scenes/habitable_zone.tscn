@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://c2dx00wea0w36"]
+
+[ext_resource type="Script" uid="uid://delns0lu3nm2c" path="res://scripts/habitable_zone.gd" id="1_cclqo"]
+
+[node name="HabitableZone" type="Node2D"]
+modulate = Color(1, 1, 1, 0.1)
+light_mask = 0
+script = ExtResource("1_cclqo")

@@ -1,0 +1,160 @@
+[gd_scene load_steps=4 format=3 uid="uid://v57y5nfw1qip"]
+
+[ext_resource type="Script" uid="uid://dm4j7j335n4c1" path="res://scripts/main_menu.gd" id="1_l6cm7"]
+
+[sub_resource type="Animation" id="Animation_l6cm7"]
+resource_name = "MoveDown"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MenuLayer:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(0.3, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(0, 720)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_bqqt6"]
+_data = {
+&"MoveDown": SubResource("Animation_l6cm7")
+}
+
+[node name="MainMenu" type="Node2D"]
+script = ExtResource("1_l6cm7")
+
+[node name="MenuLayer" type="CanvasLayer" parent="."]
+
+[node name="ColorRect" type="ColorRect" parent="MenuLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.205118, 0.205117, 0.205117, 1)
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MenuLayer/ColorRect"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.4
+anchor_top = 0.377778
+anchor_right = 0.6
+anchor_bottom = 0.888889
+grow_horizontal = 2
+grow_vertical = 2
+draw_focus_border = true
+horizontal_scroll_mode = 0
+metadata/_edit_use_anchors_ = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MenuLayer/ColorRect/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 20.0
+
+[node name="Label" type="Label" parent="MenuLayer/ColorRect/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+text = "Put a starpasta .csv file in
+the \"input_files\" folder!"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SimButton" type="Button" parent="MenuLayer/ColorRect"]
+layout_mode = 2
+anchor_left = 0.4
+anchor_top = 0.266667
+anchor_right = 0.6
+anchor_bottom = 0.355556
+offset_top = -1.52588e-05
+disabled = true
+text = "Start Simulation!"
+metadata/_edit_use_anchors_ = true
+
+[node name="ControlsLabel2" type="Label" parent="MenuLayer"]
+anchors_preset = -1
+anchor_left = 0.0125
+anchor_top = 0.288889
+anchor_right = 0.2625
+anchor_bottom = 0.377777
+offset_left = 752.0
+offset_top = -16.0002
+offset_right = 752.0
+offset_bottom = -15.9998
+text = "Options"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MenuLayer"]
+anchors_preset = -1
+anchor_right = 0.25
+anchor_bottom = 0.177778
+offset_left = 768.0
+offset_top = 256.0
+offset_right = 768.0
+offset_bottom = 256.0
+metadata/_edit_group_ = true
+metadata/_edit_use_anchors_ = true
+
+[node name="SkipMSToggle" type="CheckButton" parent="MenuLayer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "Skip Main Sequence?"
+alignment = 1
+
+[node name="ToggleOrbits" type="CheckButton" parent="MenuLayer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "Enable orbits?"
+alignment = 1
+
+[node name="ControlsLabel" type="Label" parent="MenuLayer"]
+anchors_preset = -1
+anchor_left = 0.0125
+anchor_top = 0.266667
+anchor_right = 0.375781
+anchor_bottom = 0.370833
+offset_top = -1.52588e-05
+text = "Controls:
+	J - Disabled speed controls. Press J again to enable them.
+	R - Returns to the main menu. Stops the current simulation. "
+metadata/_edit_use_anchors_ = true
+
+[node name="FileLocations" type="RichTextLabel" parent="MenuLayer"]
+clip_contents = false
+anchors_preset = -1
+anchor_left = 0.0125
+anchor_top = 0.777778
+anchor_right = 0.391406
+anchor_bottom = 0.977778
+theme_override_font_sizes/normal_font_size = 15
+bbcode_enabled = true
+text = "Location of  \"input_files\" folder:
+Windows: C:\\Users\\[username]\\AppData\\Roaming\\GDStarpasta
+Linux (any distro): ~/home/[username]/.local/share/GDStarpasta
+Mac: ~/Library/Application Support/GDStarpasta"
+metadata/_edit_use_anchors_ = true
+
+[node name="LinkButton" type="LinkButton" parent="MenuLayer"]
+offset_left = 768.0
+offset_top = 640.0
+offset_right = 1280.0
+offset_bottom = 704.0
+text = "A more detailed explanation of Starpasta, the basis for this app."
+underline = 1
+uri = "https://worldbuildingpasta.blogspot.com/2022/11/an-apple-pie-from-scratch-part-ii.html"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_bqqt6")
+}
+
+[node name="Timer" type="Timer" parent="."]
+one_shot = true
+
+[connection signal="pressed" from="MenuLayer/ColorRect/SimButton" to="." method="_on_sim_button_pressed"]
+[connection signal="toggled" from="MenuLayer/VBoxContainer/SkipMSToggle" to="." method="_on_skip_ms_toggle_toggled"]
+[connection signal="toggled" from="MenuLayer/VBoxContainer/ToggleOrbits" to="." method="_on_toggle_orbits_toggled"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
