@@ -53,5 +53,3 @@ func get_time_formatted():
 	var time_dict = Time.get_time_dict_from_system()
 	var f_time = "D {0} T {1}-{2}-{3}".format([date, time_dict["hour"], time_dict["minute"], time_dict["second"]])
 	return f_time
-func _ready() -> void:
-	get_time_formatted()
