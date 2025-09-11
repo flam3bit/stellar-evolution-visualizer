@@ -53,6 +53,8 @@ Parameters:
 - ``AGE:`` Star's age in millions of years.
 - ``ZOOM:`` Zoom override.
 
+
+
 #### Notes
 - Thermal pulses (expanding/shrinking) of the star during the asymptotic giant branch is not visualized.
 - Evolutionary stage names may be applied to the wrong stars (e.g. Wolf-Rayet star for a 0.5 mass red dwarf.)
