@@ -47,3 +47,11 @@ func get_type(variable: Variant):
 func logprint(message:Variant) -> void:
 	var print = "[{0}] {1}".format([Time.get_time_string_from_system(), message])
 	print(print)
+
+func get_time_formatted():
+	var date = Time.get_date_string_from_system()
+	var time_dict = Time.get_time_dict_from_system()
+	var f_time = "D {0} T {1}-{2}-{3}".format([date, time_dict["hour"], time_dict["minute"], time_dict["second"]])
+	return f_time
+func _ready() -> void:
+	get_time_formatted()
