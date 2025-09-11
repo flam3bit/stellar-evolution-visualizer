@@ -16,7 +16,10 @@ More information [here](https://worldbuildingpasta.blogspot.com/2022/11/an-apple
 - Evolutionary stage names may be applied to the wrong stars (e.g. Wolf-Rayet star for a 0.5 mass red dwarf.)
 - Orbital expansion may be inaccurate.
 
-[Star colors (table 5)](https://arxiv.org/abs/2101.06254)
+#### Credits:
+- [Star colors (table 5)](https://arxiv.org/abs/2101.06254)
+
+
 ### Preview (Solar System)
 Inner (Mercury, Venus, Earth, Mars)
 ![The inner solar system](/showcase/D%202025-09-10%20T%2008-30-30.png)
