@@ -59,8 +59,8 @@ Parameters:
 - Orbital expansion may be inaccurate.
 
 #### Credits:
-- [Star colors (table 5)](https://arxiv.org/abs/2101.06254)
-
+- [Star colors - arXiv:2101.06254](https://arxiv.org/abs/2101.06254)
+- [Starpasta - hersfeldtn](https://github.com/hersfeldtn/Starpasta/releases)
 
 ### Preview (Solar System)
 Inner (Mercury, Venus, Earth, Mars)
