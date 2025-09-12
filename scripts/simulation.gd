@@ -12,6 +12,7 @@ class_name Simulation extends Node2D
 @onready var supernova_layer:CanvasLayer = $SupernovaLayer
 @onready var hz_view: HabitableZone = $HabitableZone
 @onready var pause: Button = $Years/Control/PauseButton
+@onready var camera = $Camera
 
 @onready var orbits: Node = $Orbits
 @onready var infoboxes: VFlowContainer = $Infoboxes/InfoboxContainer
@@ -71,6 +72,7 @@ func _process(delta: float) -> void:
 			infobox.set_sma(infobox.semi_major_axis * scale_mult)
 			
 		for orbit:Orbit in orbits.get_children(): 
+			orbit.set_speed_multiplier($Star.get_speed_multiplier())
 			orbit.scale = Vector2(scale_mult, scale_mult * orbit.semi_minor_axis)
 	
 
@@ -270,6 +272,7 @@ func load_star_config(star_name:String):
 	if !cfg:
 		HelperFunctions.logprint("{0} has no config file".format([star_name]))
 		config_star_age = 1e200
+
 	else:
 		var delimiter = ":"
 		var tab = "    "
@@ -279,6 +282,11 @@ func load_star_config(star_name:String):
 			
 			if cfg_line.begins_with("AGE:"):
 				config_star_age = float(cfg_line.split(":")[1].strip_edges())
+				
+			if cfg_line.begins_with("ZOOM:"):
+				$Camera.set_c_zoom(float(cfg_line.split(":")[1].strip_edges()))
+			else:
+				camera.set_c_zoom(0.1)
 
 func load_orbits(star_name:String):
 	var orbits = FileAccess.open("user://orbits/{0}.txt".format([star_name]), FileAccess.READ)
@@ -389,6 +397,8 @@ func _unhandled_key_input(event: InputEvent) -> void:
 				else:
 					ui_visible(true)
 					h_ui = 1
+			KEY_Z:
+				print(camera.zzoom)
 
 func ui_visible(toggled:bool):
 	$UI.visible = toggled

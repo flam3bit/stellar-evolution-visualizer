@@ -74,14 +74,11 @@ metadata/_edit_use_anchors_ = true
 
 [node name="OptionsLbl" type="Label" parent="MenuLayer"]
 anchors_preset = -1
-anchor_left = 0.0125
-anchor_top = 0.288889
-anchor_right = 0.2625
-anchor_bottom = 0.377777
-offset_left = 752.0
-offset_top = -16.0002
-offset_right = 752.0
-offset_bottom = -15.9998
+anchor_left = 0.6
+anchor_top = 0.266667
+anchor_right = 0.85
+anchor_bottom = 0.355555
+offset_bottom = 1.52588e-05
 text = "Options"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -114,12 +111,14 @@ alignment = 1
 anchors_preset = -1
 anchor_left = 0.0125
 anchor_top = 0.266667
-anchor_right = 0.375781
-anchor_bottom = 0.370833
-offset_top = -1.52588e-05
+anchor_right = 0.390625
+anchor_bottom = 0.623611
+offset_right = -19.0003
+offset_bottom = -182.0
 text = "Controls:
 J - Disabled speed controls. Press J again to enable them.
 R - Returns to the main menu. Stops the current visualization. 
+L - Hides the star properties and orbit infoboxes.
 S - Screenshots the current screen.
 (note: the star will be white and the habitable zone less visible)
 (if this is not desired, just use the default screenshotting tool
@@ -137,9 +136,10 @@ anchor_right = 0.391406
 anchor_bottom = 0.977778
 theme_override_font_sizes/normal_font_size = 15
 bbcode_enabled = true
-text = "Location of  \"input_files\" folder:
-Windows: C:\\Users\\[username]\\AppData\\Roaming\\GDStarpasta
-Linux (any distro): ~/home/[username]/.local/share/GDStarpasta"
+text = "Location of  \"input_files\" folder: 
+(must enable viewing of hidden files before this!)
+Windows: C:\\Users\\[username]\\AppData\\Roaming\\StellarEvolutionVisualizer
+Linux (any distro): ~/home/[username]/.local/share/StellarEvolutionVisualizer"
 metadata/_edit_use_anchors_ = true
 
 [node name="LinkButton" type="LinkButton" parent="MenuLayer"]

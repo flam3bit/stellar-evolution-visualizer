@@ -62,11 +62,11 @@ func _process(delta: float) -> void:
 		if stage == SUBGIANT_HERTZSPRUNG:
 			speed_mult = 0.2
 	
-	if init_temp >= 4600 and init_temp < 6050:
+	if init_temp >= 4600 and init_temp < 6000:
 		if stage == SUBGIANT_HERTZSPRUNG:
-			speed_mult = 0.5
-		if stage > GIANT_BRANCH and stage < He_WD:
 			speed_mult = 0.25
+		if stage > GIANT_BRANCH and stage < He_WD:
+			speed_mult = 0.1
 			if stage == EARLY_AGB:
 				speed_mult = 0.01
 			if stage == TP_AGB:
@@ -96,6 +96,7 @@ func advance_age(delta):
 		general_idx += 1
 		return
 	# hopefully it wont tweak out or smth
+	
 	frac = initial_diff / diff
 	
 	age += (diff * delta) * frac * speed_mult
@@ -258,6 +259,7 @@ func get_supernova_index(stage_array:Array):
 			HelperFunctions.logprint("Supernova index: {0}".format([supernova_idx]))
 			break
 
+# todo: base evolution class based on temp/luminosity regime, just find a good paper for that.
 func match_stage(value):
 	if !value == MAIN_SEQUENCE:
 		pass
@@ -338,6 +340,9 @@ func get_stage():
 ##Gets the habitable zone of a star.
 func get_hz():
 	return [hzi, hzo]
+
+func get_speed_multiplier():
+	return speed_mult
 
 func _star_print_pretty():
 	var string = "Name: {0}\nMass: {1}x solar mass\nRadius: {2}x solar mass\nLuminosity: {3}x solar mass\nTeff: {4}\nEvo. Stage: {5} ({6})".format([_sname, mass, radius, luminosity, temperature, str_stage, stage])

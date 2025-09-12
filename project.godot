@@ -20,7 +20,7 @@ Star colors (from 2300-52500 K): https://arxiv.org/abs/2101.06254"
 config/version="0.9.9 beta"
 run/main_scene="uid://fphf2bna8enm"
 config/use_custom_user_dir=true
-config/custom_user_dir_name="GDStarpasta"
+config/custom_user_dir_name="StellarEvolutionVisualizer"
 config/features=PackedStringArray("4.4", "Forward Plus")
 config/icon="uid://br2lrxyorbv7d"
 
