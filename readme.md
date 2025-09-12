@@ -32,7 +32,7 @@ Example
 Parameters:
 - ``SemiMajorAxis:`` The orbit's semi-major axis in AU
 - ``Eccentricity:``  The object's eccentricity. Should not be above 1.
-- ``Rotation:`` The orbit's rotation rate, an inaccurate representation of [apsidal precession.](https://en.wikipedia.org/wiki/Apsidal_precession)
+- ``Rotation:`` The orbit's rotation rate in degrees, multiplied by 10, an inaccurate representation of [apsidal precession.](https://en.wikipedia.org/wiki/Apsidal_precession)
 - ``Color:`` The orbit (and infobox's) color.
   - Additionally, the color can be one of [these](https://raw.githubusercontent.com/godotengine/godot-docs/master/img/color_constants.png) by using its name
 - ``Fade:`` (Optional) Can be specified true or false. If enabled, the orbit and infobox will have 50% transparency.
