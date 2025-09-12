@@ -67,11 +67,14 @@ func get_periastron_au():
 func get_periastron_km():
 	return ((semi_major_axis * scale.x) * (1 - eccentricity)) * Constants.AU
 
-## Gets the closest point from the star. -astron relates to stars, not the Sun, where it would be called
-## apohelion.
+func set_speed_multiplier(value):
+	speed_mult = value
+
+## Gets the closest point from the star in AU
 func get_apoastron_au():
 	return ((semi_major_axis * scale.x) * (1 + eccentricity))
 
+## Ditto, but in km
 func get_apoastron_km():
 	return ((semi_major_axis * scale.x) * (1 + eccentricity)) * Constants.AU
 	

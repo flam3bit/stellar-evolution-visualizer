@@ -72,6 +72,7 @@ func _process(delta: float) -> void:
 			infobox.set_sma(infobox.semi_major_axis * scale_mult)
 			
 		for orbit:Orbit in orbits.get_children(): 
+			orbit.set_speed_multiplier($Star.get_speed_multiplier())
 			orbit.scale = Vector2(scale_mult, scale_mult * orbit.semi_minor_axis)
 	
 
