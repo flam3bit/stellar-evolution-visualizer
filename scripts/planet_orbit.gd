@@ -38,6 +38,7 @@ func _ready() -> void:
 	scale = Vector2(1, semi_mi_ax_scl)
 
 var speed_mult:float = 1.0
+
 func _process(delta: float) -> void:
 	
 	# Stops orbital precession, just like Algol/MrPlasma
@@ -48,7 +49,7 @@ func _process(delta: float) -> void:
 	rotate(deg_to_rad(-rr * delta) * speed_mult * parent_sim.sim_speed)
 	
 	if star.get_radius_au() >= get_periastron_au():
-		HelperFunctions.logprint("{0} fell into {1}".format([name, star.get_star_name()]))
+		HelperFunctions.logprint("{0} got destroyed :(".format([name]))
 		visible = false
 		queue_free()
 		

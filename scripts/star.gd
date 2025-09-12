@@ -62,7 +62,7 @@ func _process(delta: float) -> void:
 		if stage == SUBGIANT_HERTZSPRUNG:
 			speed_mult = 0.2
 	
-	if init_temp >= 4600 and init_temp < 6050:
+	if init_temp >= 4600 and init_temp < 6000:
 		if stage == SUBGIANT_HERTZSPRUNG:
 			speed_mult = 0.5
 		if stage > GIANT_BRANCH and stage < He_WD:
@@ -258,6 +258,7 @@ func get_supernova_index(stage_array:Array):
 			HelperFunctions.logprint("Supernova index: {0}".format([supernova_idx]))
 			break
 
+# todo: base evolution class based on temp/luminosity regime, just find a good paper for that.
 func match_stage(value):
 	if !value == MAIN_SEQUENCE:
 		pass
