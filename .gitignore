@@ -21,3 +21,5 @@ reference_data/
 fonts/
 
 .idea/
+
+export_presets.cfg
