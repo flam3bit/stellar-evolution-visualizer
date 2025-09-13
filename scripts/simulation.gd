@@ -35,6 +35,7 @@ var enable_orbits = false
 
 var config_star_age:float = 1e200
 
+## Pauses the visualization at the star's configured age.
 var pause_sim_at_age = true
 
 var skip_ms = false
@@ -75,9 +76,7 @@ func _process(delta: float) -> void:
 			orbit.set_speed_multiplier($Star.get_speed_multiplier())
 			orbit.scale = Vector2(scale_mult, scale_mult * orbit.semi_minor_axis)
 	
-
-	
-	if $Star.get_age() >= config_star_age and pause_sim_at_age and !skip_ms:
+	if $Star.get_age() >= config_star_age and pause_sim_at_age:
 		pause.toggled.emit(true)
 		HelperFunctions.logprint("Paused, attempted to pause at {0}, current age is {1}".format([config_star_age, $Star.get_age()]))
 		HelperFunctions.logprint("PRINTING STAR INFORMATION")
@@ -257,6 +256,9 @@ func _on_main_menu_transmit_data(data:Array, original_mass:float, original_temp:
 	else:
 		$Years/Control/DiffLabel.visible = true
 	
+	if $Star.get_age() >= config_star_age:
+		pause_sim_at_age = false
+	
 	HelperFunctions.logprint("Sim pausing at: {0} Ma".format([config_star_age]))
 	if enable_orbits:
 		HelperFunctions.logprint("Selected a new star, clearing infoboxes and orbits")
@@ -297,6 +299,9 @@ func load_orbits(star_name:String):
 		var delimiter = ":"
 		var tab = "    "
 		
+		var orbits_array:Array[Orbit]
+		var infoboxes:Array[PlanetInfobox]
+		
 		while orbits.get_position() < orbits.get_length():
 			var line = orbits.get_line()
 
@@ -334,12 +339,18 @@ func load_orbits(star_name:String):
 					new_infobox.box_color = Color(line.split(delimiter)[1].strip_edges())
 					new_orbit.color = Color(line.split(delimiter)[1].strip_edges())
 					new_orbit.position = $StarPos.position
-					$Infoboxes/InfoboxContainer.add_child(new_infobox)
-					$Orbits.add_child(new_orbit)
+					infoboxes.append(new_infobox)
+					orbits_array.append(new_orbit)
 					
 				if tabstrip.begins_with("Fade"):
 					new_infobox.modulate = Constants.FADE
 					new_orbit.modulate = Constants.FADE
+		orbits_array.sort_custom(func(a:Orbit, b:Orbit): return a.get_semi_major_axis_au() < b.get_semi_major_axis_au())
+		infoboxes.sort_custom(func(a:PlanetInfobox, b:PlanetInfobox): return a.orbit.get_semi_major_axis_au() < b.orbit.get_semi_major_axis_au())
+		
+		for idx in orbits_array.size():
+			$Orbits.add_child(orbits_array[idx])
+			$Infoboxes/InfoboxContainer.add_child(infoboxes[idx])
 
 func _on_gd_starpasta_child_order_changed() -> void:
 	$AnimationPlayer.play("UIMove")

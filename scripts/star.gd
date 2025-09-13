@@ -58,13 +58,11 @@ func _process(delta: float) -> void:
 	change_luminosity(delta)
 	change_hz(delta)
 	
-	if init_temp >= 31900:
+	if init_temp >= 33300:
 		if stage == SUBGIANT_HERTZSPRUNG:
 			speed_mult = 0.2
 	
-	if init_temp >= 4600 and init_temp < 6000:
-		if stage == SUBGIANT_HERTZSPRUNG:
-			speed_mult = 0.25
+	if init_temp >= 5380 and init_temp < 5930:
 		if stage > GIANT_BRANCH and stage < He_WD:
 			speed_mult = 0.1
 			if stage == EARLY_AGB:
@@ -250,6 +248,29 @@ func _on_simulation_transmit_star_data(data: Array, star_name: String) -> void:
 	self_modulate = StarColors.get_color_from_temp(temperature)
 	scale = Vector2(radius, radius)
 	get_supernova_index(data[1])
+	
+	# this removes indices that have a difference of zero
+	var zero_indices:Array
+	var differences:Array
+	for age_val_idx in sim_data[2].size():
+		var len = sim_data[2].size()
+		var cur:float
+		var prev:float
+		
+		if age_val_idx > 0:
+			cur = sim_data[2][age_val_idx]
+			prev = sim_data[2][age_val_idx - 1]
+			
+			if cur - prev > 0:
+				differences.append(cur - prev)
+			if cur - prev <= 1e-8:
+				zero_indices.append(age_val_idx)
+				
+	for ind_data:Array in sim_data:
+		for remove_indices in zero_indices:
+			ind_data.remove_at(remove_indices)
+	
+	
 
 func get_supernova_index(stage_array:Array):
 	for idx in stage_array.size():
