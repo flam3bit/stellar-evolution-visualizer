@@ -21,7 +21,7 @@ config/version="0.9.96 beta"
 run/main_scene="uid://fphf2bna8enm"
 config/use_custom_user_dir=true
 config/custom_user_dir_name="StellarEvolutionVisualizer"
-config/features=PackedStringArray("4.4", "Forward Plus")
+config/features=PackedStringArray("4.5", "Forward Plus")
 config/icon="uid://br2lrxyorbv7d"
 
 [autoload]

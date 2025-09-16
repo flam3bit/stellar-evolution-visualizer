@@ -283,10 +283,14 @@ func _on_main_menu_transmit_data(data:Array, original_mass:float, original_temp:
 	
 	if $Star.get_age() >= config_star_age:
 		pause_sim_at_age = false
+	HelperFunctions.logprint("Selected a new star, clearing infoboxes and orbits")	
+	for infobox:PlanetInfobox in infoboxes.get_children():
+		infobox.queue_free()
+	for orbit:Orbit in orbits.get_children():
+		orbit.queue_free()
 	
 	HelperFunctions.logprint("Sim pausing at: {0} Ma".format([config_star_age]))
 	if enable_orbits:
-		HelperFunctions.logprint("Selected a new star, clearing infoboxes and orbits")
 		for infobox:PlanetInfobox in infoboxes.get_children():
 			infobox.queue_free()
 		for orbit:Orbit in orbits.get_children():
