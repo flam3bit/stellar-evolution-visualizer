@@ -63,12 +63,18 @@ func _process(delta: float) -> void:
 			speed_mult = 0.2
 	
 	if init_temp >= 5380 and init_temp < 5930:
+		if stage == SUBGIANT_HERTZSPRUNG:
+			speed_mult = 0.5
 		if stage > GIANT_BRANCH and stage < He_WD:
-			speed_mult = 0.1
+			speed_mult = 0.25
 			if stage == EARLY_AGB:
 				speed_mult = 0.01
 			if stage == TP_AGB:
 				speed_mult = 0.0005
+				
+	if stage > He_WD:
+		speed_mult = 0.01
+	
 	if general_idx == supernova_idx and supernova:
 		sim_parent.animate_supernova()
 		HelperFunctions.logprint("Supernova!")
@@ -253,7 +259,7 @@ func _on_simulation_transmit_star_data(data: Array, star_name: String) -> void:
 	var zero_indices:Array
 	var differences:Array
 	for age_val_idx in sim_data[2].size():
-		var len = sim_data[2].size()
+		var length = sim_data[2].size()
 		var cur:float
 		var prev:float
 		
@@ -365,7 +371,7 @@ func get_hz():
 func get_speed_multiplier():
 	return speed_mult
 
-func _star_print_pretty():
+func star_print_pretty():
 	var string = "Name: {0}\nMass: {1}x solar mass\nRadius: {2}x solar mass\nLuminosity: {3}x solar mass\nTeff: {4}\nEvo. Stage: {5} ({6})".format([_sname, mass, radius, luminosity, temperature, str_stage, stage])
 	return string
 
@@ -376,7 +382,7 @@ func get_star_name():
 	return _sname
 
 func _to_string() -> String:
-	return _star_print_pretty()
+	return star_print_pretty()
 
 # only for debugging purposes
 func _on_timer_timeout() -> void:

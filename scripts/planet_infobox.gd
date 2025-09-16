@@ -1,6 +1,6 @@
 class_name PlanetInfobox extends Control
 ## Class for planet infoboxes. Shows name, color, the orbital period, and the semi-major axis.
-
+@warning_ignore_start("unused_variable")
 @onready var sma_lbl: Label = $VBoxContainer/BoxPanel/VBoxContainer/SemiMajorAxis
 @onready var period_lbl: Label = $VBoxContainer/BoxPanel/VBoxContainer/OrbitalPeriod
 @onready var boxtitle: Label = $VBoxContainer/BoxTitle
@@ -25,7 +25,7 @@ func _ready() -> void:
 	name = box_title
 	$VBoxContainer/BoxTitle/ColorBG.color = box_color
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	update_sma(orbit.get_semi_major_axis_au())
 	var period:float = HelperFunctions.get_period_from_distance(star_mass, cur_sma)
 	update_period(period)

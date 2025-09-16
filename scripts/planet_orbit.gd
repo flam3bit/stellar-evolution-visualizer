@@ -83,3 +83,11 @@ func get_semi_major_axis_au():
 
 func get_semi_major_axis_km():
 	return (semi_major_axis * scale.x) * Constants.AU
+
+func pretty_print():
+	var period = HelperFunctions.get_period_from_distance(star.get_mass(), get_semi_major_axis_au())
+	var str_shit = "Name: {0}\n\tSemi-major axis: {1} AU\n\tOrbital period: {2} years".format([orbit_name, get_semi_major_axis_au(), period])
+	return str_shit
+
+func _to_string() -> String:
+	return pretty_print()

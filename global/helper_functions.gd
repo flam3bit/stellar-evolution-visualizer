@@ -1,6 +1,7 @@
 extends Node
 @warning_ignore_start("shadowed_global_identifier")
-## Kepler's third law. 
+## Kepler's third law. Gets the semi-major axis in AU using the stellar mass in sun masses and the
+## orbital period in years.
 func get_distance_from_period(stellar_mass:float, t:float):
 	var equation: float = (t * Constants.YEARS_S) ** 2
 	var GM: float = Constants.G * (stellar_mass * Constants.KG_SOLAR_MASS)
@@ -15,7 +16,8 @@ func get_distance_from_period(stellar_mass:float, t:float):
 	equation = cbrt(equation)
 	return equation / Constants.AU_M
 	
-## Kepler's third law.
+## Kepler's third law, gets the orbital period in years using the stellar mass in sun masses and the
+## semi-major axis (a) in AU
 func get_period_from_distance(stellar_mass:float, a:float):
 	var GM: float = Constants.G * (stellar_mass * Constants.KG_SOLAR_MASS)
 	var sma_m:float = a * Constants.AU_M

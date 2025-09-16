@@ -17,7 +17,7 @@ class_name Simulation extends Node2D
 @onready var orbits: Node = $Orbits
 @onready var infoboxes: VFlowContainer = $Infoboxes/InfoboxContainer
 
-@warning_ignore_start("redundant_await")
+@warning_ignore_start("shadowed_variable")
 
 signal transmit_star_data(data:Array, star_name:String)
 
@@ -47,9 +47,13 @@ func _ready() -> void:
 	for child in $Infoboxes/InfoboxContainer.get_children():
 		child.queue_free()
 	$Star.position = $StarPos.position
-	$HabitableZone.position = $StarPos.position
+	hz_view.position = $StarPos.position
 
-func _process(delta: float) -> void:
+var scale_mult_multiplied:float
+var scale_mult_scale:float
+@export var expansion_factor:float = 6.0
+var new_scale_mult:float
+func _process(_delta: float) -> void:
 	var teff = $Star.get_temperature()
 	var lum = $Star.get_luminosity()
 	var rad = $Star.get_radius()
@@ -62,7 +66,22 @@ func _process(delta: float) -> void:
 	set_zoom()
 	set_hz_text(hz)
 	hz_view.set_hz(hz)
-	scale_mult = orig_mass / cur_mass
+	hz_view.set_star_radius($Star.get_radius_au())
+	scale_mult = (orig_mass / cur_mass)
+	
+	if $Star.stage <= StarBase.GIANT_BRANCH:
+		scale_mult_multiplied = scale_mult ** expansion_factor
+		scale_mult_scale = scale_mult_multiplied / scale_mult
+		new_scale_mult = scale_mult * scale_mult_scale
+	
+	
+	if $Star.stage > StarBase.GIANT_BRANCH:
+		var new:float = (scale_mult * scale_mult_scale) / new_scale_mult
+		new **= 0.38
+		scale_mult *= scale_mult_scale * (1.0 / new)
+	else:
+		scale_mult **= expansion_factor
+	
 	
 	if $Star.stage > StarBase.He_WD:
 		$UI/StarProperties/QuitButton.visible = true
@@ -81,6 +100,10 @@ func _process(delta: float) -> void:
 		HelperFunctions.logprint("Paused, attempted to pause at {0}, current age is {1}".format([config_star_age, $Star.get_age()]))
 		HelperFunctions.logprint("PRINTING STAR INFORMATION")
 		print($Star)
+		
+		if skip_ms:
+			print_orbits()
+		
 		pause_sim_at_age = false
 		
 
@@ -251,6 +274,8 @@ func _on_main_menu_transmit_data(data:Array, original_mass:float, original_temp:
 	load_star_config(star_name)
 	$Star.set_star_name(star_name)
 	
+
+	
 	if config_star_age == 1e200:
 		$Years/Control/DiffLabel.visible = false
 	else:
@@ -410,6 +435,26 @@ func _unhandled_key_input(event: InputEvent) -> void:
 					h_ui = 1
 			KEY_Z:
 				print(camera.zzoom)
+			KEY_O:
+				print_orbits()
+
+var user_dir = DirAccess.open("user://")
+
+func print_orbits():
+	if !user_dir.dir_exists("cur_orbit_files"):
+		user_dir.make_dir("cur_orbit_files")
+	
+	var file_name = "{0} {1}.txt".format([$Star.get_star_name(), HelperFunctions.get_time_formatted()])
+	
+	var file = FileAccess.open("user://cur_orbit_files/{0}".format([file_name]), FileAccess.WRITE)
+	
+	if orbits.get_children().size() == 0:
+		return
+	else:
+		file.store_line($Star.star_print_pretty())
+		for orbit:Orbit in orbits.get_children():
+			file.store_line(orbit.pretty_print())
+		HelperFunctions.logprint("Saved {0}".format([file_name]))
 
 func ui_visible(toggled:bool):
 	$UI.visible = toggled

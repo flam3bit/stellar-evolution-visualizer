@@ -7,7 +7,7 @@ func _draw() -> void:
 	draw_circle(Vector2.ZERO, Constants.AUPX_SCALED, Color.CRIMSON, false, -1)
 
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	scale = Vector2(orb_scale, orb_scale)
 
 func set_orbit_scale(value:float):
