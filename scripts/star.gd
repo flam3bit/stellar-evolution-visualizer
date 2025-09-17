@@ -267,21 +267,18 @@ func _on_simulation_transmit_star_data(data: Array, star_name: String) -> void:
 			if cur - prev > 0:
 				differences.append(cur - prev)
 			if cur - prev <= 1e-8:
-				print(cur - prev)
+				# print(cur - prev)
 				zero_indices.append(age_val_idx)
 			if cur - prev <= 1e-5:
-				print(cur - prev)
-			
+				# print(cur - prev)
+				pass
 	for ind_data:Array in sim_data:
 		for remove_indices in zero_indices:
 			ind_data.remove_at(remove_indices)
 	
-	
-	
 func get_supernova_index(stage_array:Array):
 	for idx in stage_array.size():
 		supernova_idx = 99999
-		print(idx)
 		if stage_array[idx] == NEUTRON_STAR or stage_array[idx] == BLACK_HOLE or stage_array[idx] == NO_REMNANT:
 			supernova_idx = idx
 			HelperFunctions.logprint("Supernova index: {0}".format([supernova_idx]))
@@ -371,7 +368,7 @@ func get_speed_multiplier():
 	return speed_mult
 
 func star_print_pretty():
-	var string = "Name: {0}\nMass: {1}x solar mass\nRadius: {2}x solar mass\nLuminosity: {3}x solar mass\nTeff: {4}\nEvo. Stage: {5} ({6})".format([_sname, mass, radius, luminosity, temperature, str_stage, stage])
+	var string = "Name: {0}\nMass: {1}x solar mass\nRadius: {2}x solar radius\nLuminosity: {3}x solar luminosity\nTeff: {4}\nEvo. Stage: {5} ({6})".format([_sname, mass, radius, luminosity, round(temperature), str_stage, stage])
 	return string
 
 func set_star_name(text:String):
