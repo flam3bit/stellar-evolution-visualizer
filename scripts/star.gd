@@ -15,12 +15,6 @@ class_name Star extends StarBase
 @export var luminosity = 1.35645654654645654
 
 var speed_mult = 1.0
-
-@onready var sim_parent:Simulation = get_parent()
-
-@warning_ignore("unused_signal")
-signal changed_stage(new_stage:String, stage_number:int)
-
 var stage: int = 1
 
 var age = 0
@@ -33,6 +27,9 @@ var sim_data = [1, 1, [1,0]]
 var str_stage = "Main Sequence"
 var supernova_idx = 99999 # scuffed ass number to prevent any interaction with existing data.
 var init_mass = 1
+@onready var sim_parent:Simulation = get_parent()
+
+
 
 func _draw() -> void:
 	draw_circle(Vector2.ZERO, Constants.SUN_PX, Color.WHITE)
@@ -72,7 +69,7 @@ func _process(delta: float) -> void:
 			if stage == TP_AGB:
 				speed_mult = 0.0005
 				
-	if stage > He_WD:
+	if stage >= He_WD:
 		speed_mult = 0.01
 	
 	if general_idx == supernova_idx and supernova:
@@ -270,23 +267,26 @@ func _on_simulation_transmit_star_data(data: Array, star_name: String) -> void:
 			if cur - prev > 0:
 				differences.append(cur - prev)
 			if cur - prev <= 1e-8:
+				print(cur - prev)
 				zero_indices.append(age_val_idx)
-				
+			if cur - prev <= 1e-5:
+				print(cur - prev)
+			
 	for ind_data:Array in sim_data:
 		for remove_indices in zero_indices:
 			ind_data.remove_at(remove_indices)
 	
 	
-
+	
 func get_supernova_index(stage_array:Array):
 	for idx in stage_array.size():
 		supernova_idx = 99999
+		print(idx)
 		if stage_array[idx] == NEUTRON_STAR or stage_array[idx] == BLACK_HOLE or stage_array[idx] == NO_REMNANT:
 			supernova_idx = idx
 			HelperFunctions.logprint("Supernova index: {0}".format([supernova_idx]))
 			break
 
-# todo: base evolution class based on temp/luminosity regime, just find a good paper for that.
 func match_stage(value):
 	if !value == MAIN_SEQUENCE:
 		pass
@@ -303,13 +303,12 @@ func match_stage(value):
 					str_stage = "Yellow Supergiant" 
 				if temperature < 5100:
 					str_stage = "Red Supergiant" 
-			# TODO: consult this paper for masses and shit
 			else:
 				str_stage = "Horizontal Branch"
 		EARLY_AGB:
 			str_stage = "Early Asymptotic Giant Branch"
 		TP_AGB:
-			str_stage = "Thermally Pulsing Asymptotic Giant Branch"
+			str_stage = "Thermally Pulsating Asymptotic Giant Branch"
 		HeMS_WR:
 			str_stage = "Wolf-Rayet Star"
 		HeHG_WR:

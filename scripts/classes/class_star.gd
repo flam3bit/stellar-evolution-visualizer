@@ -1,6 +1,5 @@
 class_name StarBase extends Node2D
 ## Base class for the star node. Constants provided from this [url=https://adsabs.harvard.edu/pdf/2000MNRAS.315..543H]paper[/url]:
-## 
 
 ## End of the main sequence for stars under 0.7 solar masses.
 const END_MAIN_SEQUENCE_UNDER_07 = 0

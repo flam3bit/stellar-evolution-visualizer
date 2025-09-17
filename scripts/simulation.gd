@@ -1,6 +1,40 @@
 class_name Simulation extends Node2D
 
-# This code sucks ass bruh
+signal transmit_star_data(data:Array, star_name:String)
+
+@export var infobox_scene: PackedScene
+@export var orbit_scene: PackedScene
+@export var expansion_factor:float = 6.0
+
+var new_infobox: PlanetInfobox
+var new_orbit: Orbit
+var scale_mult_multiplied:float
+var scale_mult_scale:float
+var new_scale_mult:float
+var distance = 1
+var orig_mass:float = 1.0
+var cur_mass:float = 1.0
+var scale_mult = orig_mass / cur_mass
+var sim_speed:float = 1.0
+var enable_orbits = false
+var config_star_age:float = 1e200
+var user_dir = DirAccess.open("user://")
+
+## Pauses the visualization at the star's configured age.
+var pause_sim_at_age = true
+var skip_ms = false
+
+#used for format strings
+var ynum:int = 4
+var lnum:int = 4
+var rnum:int = 4
+var mnum:int = 4
+var dnum:int = 4
+var hzinum:int = 4
+var hzonum:int = 4
+
+var dd = 1
+var h_ui = 1
 
 @onready var temp_text: RichTextLabel = $UI/StarProperties/StarTemp
 @onready var lum_text: RichTextLabel = $UI/StarProperties/StarLum
@@ -19,40 +53,13 @@ class_name Simulation extends Node2D
 
 @warning_ignore_start("shadowed_variable")
 
-signal transmit_star_data(data:Array, star_name:String)
-
-var distance = 1
-
-var orig_mass:float = 1.0
-
-var cur_mass:float = 1.0
-
-var scale_mult = orig_mass / cur_mass
-
-var sim_speed:float = 1.0
-
-var enable_orbits = false
-
-var config_star_age:float = 1e200
-
-## Pauses the visualization at the star's configured age.
-var pause_sim_at_age = true
-
-var skip_ms = false
-
-@export var infobox_scene: PackedScene
-@export var orbit_scene: PackedScene
-
 func _ready() -> void:
 	for child in $Infoboxes/InfoboxContainer.get_children():
 		child.queue_free()
 	$Star.position = $StarPos.position
 	hz_view.position = $StarPos.position
 
-var scale_mult_multiplied:float
-var scale_mult_scale:float
-@export var expansion_factor:float = 6.0
-var new_scale_mult:float
+
 func _process(_delta: float) -> void:
 	var teff = $Star.get_temperature()
 	var lum = $Star.get_luminosity()
@@ -123,7 +130,7 @@ func set_temp_text(temperature:float):
 	var t_color = StarColors.get_color_from_temp(temperature)
 	temp_text.text = "[color={0}]{1} K[/color]".format([t_color, int(temperature)])
 
-var ynum = 4
+
 func set_years_text(year:float):
 	var ctnum = 4
 	var curtime:float = 0.0
@@ -138,9 +145,6 @@ func set_years_text(year:float):
 	if year > 1000: 
 		ynum = 1
 	
-
-		
-		
 	var rounded_year = "%.{0}f".format([ynum]) % year
 	$Years/Control/YearLabel.text = "{0} Ma".format([rounded_year])
 	
@@ -160,7 +164,7 @@ func set_years_text(year:float):
 		var rounded_ct = "%.{0}f".format([ctnum]) % curtime
 		$Years/Control/DiffLabel.text = "Current time: {0} Ma".format([rounded_ct]) 
 
-var lnum = 4
+
 func set_lum_text(luminosity:float):
 	if luminosity < 10:
 		lnum = 4
@@ -178,7 +182,7 @@ func set_lum_text(luminosity:float):
 
 	lum_text.text = "[color=yellow]{0}L☉[/color]".format([rounded_lum])
 
-var rnum = 4
+
 func set_rad_text(radius:float):
 	var km = false
 	var earth_r = false
@@ -220,7 +224,7 @@ func set_rad_text(radius:float):
 			rad_text.text = "[color=chartreuse]{0}R☉[/color]".format([rounded_rad])
 	else:
 		rad_text.text = "[color=chartreuse]{0}km[/color]".format([rounded_rad])
-var mnum = 4
+
 func set_mass_text(mass:float):
 	cur_mass = mass
 	if mass < 10:
@@ -237,7 +241,7 @@ func set_mass_text(mass:float):
 func set_stage_text(stage:String):
 	evo_text.text = "[color=violet]{0}[/color]".format([stage])
 
-var dnum = 4
+
 func set_dist_text(mass:float):
 	var dist = HelperFunctions.get_distance_from_period(mass, 1)
 	if dist < 10:
@@ -258,14 +262,25 @@ func set_hz_text(hz:Array):
 	var hzi = hz[0]
 	var hzo = hz[1]
 	
-	var f_hzi = "%.2f" % hzi
-	var f_hzo = "%.2f" % hzo
+	if hzi < 10:
+		hzinum = 4
+	if hzi > 10 and hzi < 100:
+		hzinum = 3
+	if hzi > 100:
+		hzinum = 2
 	
-	hz_bounds.text = "[color=mediumseagreen]{0} AU-{1} AU[/color]".format([f_hzi, f_hzo])
+	if hzo < 10:
+		hzonum = 4
+	if hzo > 10 and hzo < 100:
+		hzonum = 3
+	if hzo > 100:
+		hzonum = 2
+	
+	var f_hzi = "%.{0}f".format([hzinum]) % hzi
+	var f_hzo = "%.{0}f".format([hzonum]) % hzo
+	
+	hz_bounds.text = "[color=mediumseagreen]{0}AU-{1}AU[/color]".format([f_hzi, f_hzo])
 
-## infobox class that shows up on the side.
-var new_infobox: PlanetInfobox
-var new_orbit: Orbit
 func _on_main_menu_transmit_data(data:Array, original_mass:float, original_temp:float, star_name:String) -> void:
 	orig_mass = original_mass
 	$Star.init_mass = original_mass
@@ -273,8 +288,6 @@ func _on_main_menu_transmit_data(data:Array, original_mass:float, original_temp:
 	transmit_star_data.emit(data, star_name)
 	load_star_config(star_name)
 	$Star.set_star_name(star_name)
-	
-
 	
 	if config_star_age == 1e200:
 		$Years/Control/DiffLabel.visible = false
@@ -411,8 +424,7 @@ func _pause_play(toggled:bool):
 		set_processes(true)
 		pause.text = "Pause"
 
-var dd = 1
-var h_ui = 1
+
 func _unhandled_key_input(event: InputEvent) -> void:
 	if event.is_pressed():
 		var key = event.keycode
@@ -442,7 +454,7 @@ func _unhandled_key_input(event: InputEvent) -> void:
 			KEY_O:
 				print_orbits()
 
-var user_dir = DirAccess.open("user://")
+
 
 func print_orbits():
 	if !user_dir.dir_exists("cur_orbit_files"):

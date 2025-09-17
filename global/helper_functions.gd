@@ -40,15 +40,17 @@ func get_decimal(number:float):
 	var decimal = number - integer
 	return decimal
 	
-func cbrt(a) -> float:
+static func cbrt(a) -> float:
 	return a ** (1./3.)
 
 func get_type(variable: Variant):
 	return type_string(typeof(variable))
 
-func logprint(message:Variant) -> void:
-	var print = "[{0}] {1}".format([Time.get_time_string_from_system(), message])
-	print(print)
+func logprint(...args):
+	var string = ""
+	for arg in args:
+		string += str(arg) + " "
+	prints("[{0}]".format([Time.get_time_string_from_system()]), string)
 
 func get_time_formatted():
 	var date = Time.get_date_string_from_system()
