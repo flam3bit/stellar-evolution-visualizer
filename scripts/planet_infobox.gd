@@ -14,7 +14,7 @@ var orbit: Orbit
 var cur_sma = semi_major_axis
 var fade = false
 
-@onready var star: Star = get_parent().get_parent().get_parent().get_node("Star")
+@onready var star: Star
 
 func _ready() -> void:
 	if fade:
@@ -94,3 +94,6 @@ func set_star_mass(value:float):
 
 func set_sma(value:float):
 	cur_sma = value
+	
+func set_star(star_node:Star):
+	star = star_node

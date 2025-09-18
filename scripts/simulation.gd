@@ -59,7 +59,6 @@ func _ready() -> void:
 	$Star.position = $StarPos.position
 	hz_view.position = $StarPos.position
 
-
 func _process(_delta: float) -> void:
 	var teff = $Star.get_temperature()
 	var lum = $Star.get_luminosity()
@@ -88,7 +87,6 @@ func _process(_delta: float) -> void:
 		scale_mult *= scale_mult_scale * (1.0 / new)
 	else:
 		scale_mult **= expansion_factor
-	
 	
 	if $Star.stage > StarBase.He_WD:
 		$UI/StarProperties/QuitButton.visible = true
@@ -359,9 +357,9 @@ func load_orbits(star_name:String):
 
 				new_infobox.orbit = new_orbit
 				
+				new_infobox.star = $Star
 				new_orbit.star = $Star
 				new_orbit.parent_sim = self
-
 
 			if line.begins_with(tab):
 				var tabstrip: String = line.lstrip(tab)

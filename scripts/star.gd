@@ -27,9 +27,8 @@ var sim_data = [1, 1, [1,0]]
 var str_stage = "Main Sequence"
 var supernova_idx = 99999 # scuffed ass number to prevent any interaction with existing data.
 var init_mass = 1
+var supernova:bool = true
 @onready var sim_parent:Simulation = get_parent()
-
-
 
 func _draw() -> void:
 	draw_circle(Vector2.ZERO, Constants.SUN_PX, Color.WHITE)
@@ -39,9 +38,9 @@ func _ready() -> void:
 	self_modulate = StarColors.get_color_from_temp(temperature)
 	scale = Vector2(radius, radius)
 
-var supernova:bool = true
+var speed_idx:int
+
 func _process(delta: float) -> void:
-	var delta2 = 1.0/60.0
 	max_idx = sim_data[2].size() - 1
 	initial_diff = sim_data[2][1] - sim_data[2][0]
 	scale = Vector2(radius, radius)
@@ -69,8 +68,16 @@ func _process(delta: float) -> void:
 			if stage == TP_AGB:
 				speed_mult = 0.0005
 				
+				
 	if stage >= He_WD:
-		speed_mult = 0.01
+		
+		if general_idx >= speed_idx:
+			speed_mult = 1
+		else:
+			speed_mult = 0.01
+
+	if stage < He_WD:
+		speed_idx = general_idx + 2
 	
 	if general_idx == supernova_idx and supernova:
 		sim_parent.animate_supernova()

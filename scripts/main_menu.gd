@@ -1,8 +1,10 @@
 extends Node2D
 
 @onready var vcontainer = $MenuLayer/ColorRect/ScrollContainer/VBoxContainer
-var savefiles: Array = []
-var csv:Array = []
+var savefiles: Array
+var csv:Array
+var udir = DirAccess.open("user://")
+
 
 ##Emits a signal containing the data, the star's original mass, and its name.
 signal transmit_data(data:Array, original_mass:float, original_temp:float, star_name:String)
@@ -163,3 +165,34 @@ func _on_skip_ms_toggle_toggled(toggled_on: bool) -> void:
 func _on_toggle_orbits_toggled(toggled_on: bool) -> void:
 	toggle_orbits.emit(toggled_on)
 	HelperFunctions.logprint("Toggled orbit: {0}".format([toggled_on]))	
+	
+func _on_import_file_button_pressed() -> void:
+	show_open_dialog()
+
+func _selected_a_file(path:String):
+	var f_name = path.split("/", false)[path.split("/", false).size() - 1]
+	
+	
+	var file = FileAccess.open(path, FileAccess.READ)
+	
+	var copied_file = FileAccess.open("user://input_files/{0}".format([f_name]), FileAccess.WRITE)
+	
+	while file.get_position() < file.get_length():
+		copied_file.store_line(file.get_line())
+	
+	get_tree().reload_current_scene()
+	
+func show_open_dialog():
+	var dialogue:FileDialog = FileDialog.new()
+	dialogue.filters = ["*.csv"]
+	dialogue.access = FileDialog.ACCESS_FILESYSTEM
+	dialogue.file_mode = FileDialog.FILE_MODE_OPEN_FILE
+	dialogue.name = "OpenFile"
+	add_child(dialogue)
+	dialogue.popup_centered_clamped(Vector2i(1280,720))
+	
+	dialogue.file_selected.connect(_selected_a_file)
+	
+func _on_open_user_dir_pressed() -> void:
+	var path = ProjectSettings.globalize_path("user://")
+	OS.shell_open(path)

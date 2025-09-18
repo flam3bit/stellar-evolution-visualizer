@@ -62,7 +62,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="SimButton" type="Button" parent="MenuLayer/ColorRect"]
-layout_mode = 2
+layout_mode = 0
 anchor_left = 0.4
 anchor_top = 0.266667
 anchor_right = 0.6
@@ -87,7 +87,7 @@ metadata/_edit_use_anchors_ = true
 [node name="VBoxContainer" type="VBoxContainer" parent="MenuLayer"]
 anchors_preset = -1
 anchor_right = 0.25
-anchor_bottom = 0.177778
+anchor_bottom = 0.35555556
 offset_left = 768.0
 offset_top = 256.0
 offset_right = 768.0
@@ -107,6 +107,16 @@ size_flags_vertical = 3
 text = "Enable orbits?"
 alignment = 1
 
+[node name="ImportFileButton" type="Button" parent="MenuLayer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "Import file"
+
+[node name="OpenUserDir" type="Button" parent="MenuLayer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "Open user:// folder"
+
 [node name="ControlsLabel" type="Label" parent="MenuLayer"]
 anchors_preset = -1
 anchor_left = 0.0125
@@ -125,21 +135,6 @@ S - Screenshots the current screen.
 your OS has)
 Esc - Quits the visualization.
 Spacebar - Pauses the visualization."
-metadata/_edit_use_anchors_ = true
-
-[node name="FileLocations" type="RichTextLabel" parent="MenuLayer"]
-clip_contents = false
-anchors_preset = -1
-anchor_left = 0.0125
-anchor_top = 0.777778
-anchor_right = 0.391406
-anchor_bottom = 0.977778
-theme_override_font_sizes/normal_font_size = 15
-bbcode_enabled = true
-text = "Location of  \"input_files\" folder: 
-(must enable viewing of hidden files before this!)
-Windows: C:\\Users\\[username]\\AppData\\Roaming\\StellarEvolutionVisualizer
-Linux (any distro): ~/home/[username]/.local/share/StellarEvolutionVisualizer"
 metadata/_edit_use_anchors_ = true
 
 [node name="LinkButton" type="LinkButton" parent="MenuLayer"]
@@ -162,4 +157,6 @@ one_shot = true
 [connection signal="pressed" from="MenuLayer/ColorRect/SimButton" to="." method="_on_sim_button_pressed"]
 [connection signal="toggled" from="MenuLayer/VBoxContainer/SkipMSToggle" to="." method="_on_skip_ms_toggle_toggled"]
 [connection signal="toggled" from="MenuLayer/VBoxContainer/ToggleOrbits" to="." method="_on_toggle_orbits_toggled"]
+[connection signal="pressed" from="MenuLayer/VBoxContainer/ImportFileButton" to="." method="_on_import_file_button_pressed"]
+[connection signal="pressed" from="MenuLayer/VBoxContainer/OpenUserDir" to="." method="_on_open_user_dir_pressed"]
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

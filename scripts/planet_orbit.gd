@@ -2,6 +2,9 @@ class_name Orbit extends Node2D
 ## The base class for orbits around stars. Uses equations from geometry to accurately put the Sun
 ## or other stars based on its eccentricity.
 
+var user_folder = DirAccess.open("user://")
+var star_folder = null
+
 var orbit_name: String = "Earth"
 var semi_major_axis: float = 1.0
 var semi_minor_axis:float = 1.0
@@ -16,6 +19,10 @@ var parent_sim:Simulation
 
 var begin_sma: float = 0
 
+var speed_mult:float = 1.0
+
+var orbits_folderpath = null
+
 ## Draws the orbit.
 func _draw() -> void:
 	begin_sma = semi_major_axis
@@ -29,7 +36,10 @@ func _draw() -> void:
 	HelperFunctions.logprint("Drew {0}'s orbit".format([orbit_name]))
 
 ## Sets the orbit's eccentricity.
+var orbit_fp = null
+var orbit_file:FileAccess
 func _ready() -> void:
+	make_data()
 	# semi-minor axis multiplier
 	var semi_mi_ax_scl:float = sqrt(1.0 - (eccentricity ** 2.0))
 	name = orbit_name
@@ -37,7 +47,21 @@ func _ready() -> void:
 	semi_minor_axis = semi_mi_ax_scl
 	scale = Vector2(1, semi_mi_ax_scl)
 
-var speed_mult:float = 1.0
+func make_data():
+	var starname = star.get_star_name()
+	
+	if !user_folder.dir_exists("orbit_graphs"):
+		user_folder.make_dir("orbit_graphs")
+	
+	var orbit_graphs = DirAccess.open("user://orbit_graphs")
+	
+	if not orbit_graphs.dir_exists(starname):
+		orbit_graphs.make_dir(starname)
+	await ready
+	orbit_fp = "user://orbit_graphs/{0}".format([star.get_star_name()])
+	orbit_file = FileAccess.open(orbit_fp + "/{0}.txt".format([orbit_name]), FileAccess.WRITE)
+	if FileAccess.get_open_error() != OK:
+		HelperFunctions.logprint("ERROR: Can't open {0}".format([orbit_fp + "/{0}.txt".format([orbit_name])]))
 
 func _process(delta: float) -> void:
 	
@@ -55,9 +79,18 @@ func _process(delta: float) -> void:
 		
 	if (get_periastron_au() - star.get_radius_au()) <= star.get_radius_au() * 0.05:
 		fade = true
-	
+		
 	if fade:
 		modulate = Constants.FADE
+		
+	store_data()
+
+func store_data():
+	var age = star.get_age()
+	var sma = get_semi_major_axis_au()
+	var s_rad = star.get_radius_au()
+	var ratio = s_rad / sma
+	orbit_file.store_csv_line([str(age), str(sma), str(s_rad), str(ratio)])
 
 ## Gets the closest point from the star. -astron relates to stars, not the Sun, where it would be called
 ## perihelion.
@@ -91,3 +124,6 @@ func pretty_print():
 
 func _to_string() -> String:
 	return pretty_print()
+	
+func set_star(star_node:Star):
+	star = star_node
