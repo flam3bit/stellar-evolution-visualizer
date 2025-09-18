@@ -28,6 +28,7 @@ var str_stage = "Main Sequence"
 var supernova_idx = 99999 # scuffed ass number to prevent any interaction with existing data.
 var init_mass = 1
 var supernova:bool = true
+
 @onready var sim_parent:Simulation = get_parent()
 
 func _draw() -> void:
@@ -84,6 +85,8 @@ func _process(delta: float) -> void:
 		HelperFunctions.logprint("Supernova!")
 		supernova = false
 
+	if stage >= SUBGIANT_HERTZSPRUNG:
+		pass
 var general_idx = 0
 var initial_diff = sim_data[2][1] - sim_data[2][0]
 var frac = 1
@@ -274,11 +277,8 @@ func _on_simulation_transmit_star_data(data: Array, star_name: String) -> void:
 			if cur - prev > 0:
 				differences.append(cur - prev)
 			if cur - prev <= 1e-8:
-				# print(cur - prev)
+				print(cur - prev)
 				zero_indices.append(age_val_idx)
-			if cur - prev <= 1e-5:
-				# print(cur - prev)
-				pass
 	for ind_data:Array in sim_data:
 		for remove_indices in zero_indices:
 			ind_data.remove_at(remove_indices)
