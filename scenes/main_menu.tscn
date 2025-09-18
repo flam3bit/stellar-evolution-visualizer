@@ -138,9 +138,9 @@ Spacebar - Pauses the visualization."
 metadata/_edit_use_anchors_ = true
 
 [node name="LinkButton" type="LinkButton" parent="MenuLayer"]
-offset_left = 768.0
-offset_top = 640.0
-offset_right = 1280.0
+offset_left = 392.0
+offset_top = 680.0
+offset_right = 888.0
 offset_bottom = 704.0
 text = "A more detailed explanation of Starpasta, the basis for this app."
 underline = 1

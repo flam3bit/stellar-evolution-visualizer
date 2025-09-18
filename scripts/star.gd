@@ -84,9 +84,18 @@ func _process(delta: float) -> void:
 		sim_parent.animate_supernova()
 		HelperFunctions.logprint("Supernova!")
 		supernova = false
+		
+	if sim_parent.pause_sim_at_age:
+		var percent:float = sim_parent.config_star_age * 0.1
+		
+		if get_age() >= sim_parent.config_star_age - percent:
+			speed_mult = move_toward(speed_mult, 0.1, 0.15 * delta)
+	else:
+		if post_pause:
+			speed_mult = 1
+			post_pause = false
 
-	if stage >= SUBGIANT_HERTZSPRUNG:
-		pass
+var post_pause:bool = true
 var general_idx = 0
 var initial_diff = sim_data[2][1] - sim_data[2][0]
 var frac = 1
@@ -375,7 +384,7 @@ func get_speed_multiplier():
 	return speed_mult
 
 func star_print_pretty():
-	var string = "Name: {0}\nMass: {1}x solar mass\nRadius: {2}x solar radius\nLuminosity: {3}x solar luminosity\nTeff: {4}\nEvo. Stage: {5} ({6})".format([_sname, mass, radius, luminosity, round(temperature), str_stage, stage])
+	var string = "Name: {0}\nMass: {1}x solar mass\nRadius: {2}x solar radius\nLuminosity: {3}x solar luminosity\nTeff: {4}\nEvo. Stage: {5} ({6})".format([_sname, mass, radius, luminosity, temperature, str_stage, stage])
 	return string
 
 func set_star_name(text:String):

@@ -101,7 +101,7 @@ func _process(_delta: float) -> void:
 			orbit.scale = Vector2(scale_mult, scale_mult * orbit.semi_minor_axis)
 	
 	if $Star.get_age() >= config_star_age and pause_sim_at_age:
-		pause.toggled.emit(true)
+		set_processes(false)
 		HelperFunctions.logprint("Paused, attempted to pause at {0}, current age is {1}".format([config_star_age, $Star.get_age()]))
 		HelperFunctions.logprint("PRINTING STAR INFORMATION")
 		print($Star)
