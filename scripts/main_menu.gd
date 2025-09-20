@@ -167,7 +167,10 @@ func _on_toggle_orbits_toggled(toggled_on: bool) -> void:
 	HelperFunctions.logprint("Toggled orbit: {0}".format([toggled_on]))	
 	
 func _on_import_file_button_pressed() -> void:
-	show_open_dialog()
+	if $MenuLayer/VBoxContainer/ImportFileButton.text == "Imported file, click to restart.":
+		get_tree().reload_current_scene()
+	else:
+		show_open_dialog()
 
 func _selected_a_file(path:String):
 	var f_name = path.split("/", false)[path.split("/", false).size() - 1]
@@ -179,8 +182,7 @@ func _selected_a_file(path:String):
 	
 	while file.get_position() < file.get_length():
 		copied_file.store_line(file.get_line())
-	
-	get_tree().reload_current_scene()
+	$MenuLayer/VBoxContainer/ImportFileButton.text = "Imported file, click to restart."
 	
 func show_open_dialog():
 	var dialogue:FileDialog = FileDialog.new()

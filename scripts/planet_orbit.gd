@@ -82,15 +82,18 @@ func _process(delta: float) -> void:
 		
 	if fade:
 		modulate = Constants.FADE
-		
-	store_data()
 
+	store_data()
+var mult = 1
 func store_data():
-	var age = star.get_age()
-	var sma = get_semi_major_axis_au()
-	var s_rad = star.get_radius_au()
-	var ratio = s_rad / sma
-	orbit_file.store_csv_line([str(age), str(sma), str(s_rad), str(ratio)])
+	var age = str(star.get_age())
+	var sma = str(get_semi_major_axis_au())
+	var s_rad = str(star.get_radius_au())
+	var apocent = str(get_apoastron_au())
+	var ratio = str(star.get_radius_au() / get_apoastron_au())
+	var rot = str(get_angle_deg())
+	
+	orbit_file.store_csv_line([age, sma, s_rad, ratio, rot])
 
 ## Gets the closest point from the star. -astron relates to stars, not the Sun, where it would be called
 ## perihelion.
@@ -127,3 +130,10 @@ func _to_string() -> String:
 	
 func set_star(star_node:Star):
 	star = star_node
+
+func get_angle_deg():
+	var absdeg:float = abs(rotation_degrees)
+	
+	var multiplier:int = (1 + int(absdeg / 360.0)) * 360
+	
+	return absdeg / multiplier

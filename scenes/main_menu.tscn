@@ -69,7 +69,7 @@ anchor_right = 0.6
 anchor_bottom = 0.355556
 offset_top = -1.52588e-05
 disabled = true
-text = "Start Simulation!"
+text = "Start Visualizer!"
 metadata/_edit_use_anchors_ = true
 
 [node name="OptionsLbl" type="Label" parent="MenuLayer"]

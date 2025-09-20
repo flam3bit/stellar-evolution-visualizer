@@ -283,6 +283,7 @@ func _on_main_menu_transmit_data(data:Array, original_mass:float, original_temp:
 	orig_mass = original_mass
 	$Star.init_mass = original_mass
 	$Star.init_temp = original_temp
+	HelperFunctions.logprint("Temperature:", int($Star.init_temp), "K")
 	transmit_star_data.emit(data, star_name)
 	load_star_config(star_name)
 	$Star.set_star_name(star_name)

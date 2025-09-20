@@ -28,6 +28,14 @@ var str_stage = "Main Sequence"
 var supernova_idx = 99999 # scuffed ass number to prevent any interaction with existing data.
 var init_mass = 1
 var supernova:bool = true
+var post_pause:bool = true
+var general_idx = 0
+var initial_diff = sim_data[2][1] - sim_data[2][0]
+var frac = 1
+var max_idx = sim_data[2].size() - 1
+var avg_diff:float = 150
+var proportion:float = 1
+var ydiff:float
 
 @onready var sim_parent:Simulation = get_parent()
 
@@ -44,8 +52,15 @@ var speed_idx:int
 func _process(delta: float) -> void:
 	max_idx = sim_data[2].size() - 1
 	initial_diff = sim_data[2][1] - sim_data[2][0]
+	
+	var idiff = (sim_data[2][1] - sim_data[2][0]) * delta
+	
 	scale = Vector2(radius, radius)
 	self_modulate = StarColors.get_color_from_temp(temperature)
+	
+	
+	#speed_mult *= proportion
+	
 	advance_stage()
 	match_stage(stage)
 	advance_age(delta)
@@ -54,29 +69,8 @@ func _process(delta: float) -> void:
 	change_mass(delta)
 	change_luminosity(delta)
 	change_hz(delta)
+	check_temperature_conditions(delta)
 	
-	if init_temp >= 33300:
-		if stage == SUBGIANT_HERTZSPRUNG:
-			speed_mult = 0.2
-	
-	if init_temp >= 5380 and init_temp < 5930:
-		if stage == SUBGIANT_HERTZSPRUNG:
-			speed_mult = 0.5
-		if stage > GIANT_BRANCH and stage < He_WD:
-			speed_mult = 0.25
-			if stage == EARLY_AGB:
-				speed_mult = 0.01
-			if stage == TP_AGB:
-				speed_mult = 0.0005
-				
-				
-	if stage >= He_WD:
-		
-		if general_idx >= speed_idx:
-			speed_mult = 1
-		else:
-			speed_mult = 0.01
-
 	if stage < He_WD:
 		speed_idx = general_idx + 2
 	
@@ -85,21 +79,38 @@ func _process(delta: float) -> void:
 		HelperFunctions.logprint("Supernova!")
 		supernova = false
 		
+		
+func check_temperature_conditions(delta:float):
+	if init_temp >= 33300:
+		if stage >= SUBGIANT_HERTZSPRUNG:
+			speed_mult = 0.1 * proportion
+	
+	if init_temp >= 5380 and init_temp < 5930:
+		if stage == SUBGIANT_HERTZSPRUNG:
+			speed_mult = 0.5 * proportion
+		if stage > GIANT_BRANCH and stage < He_WD:
+			speed_mult = 0.25 * proportion
+			if stage == EARLY_AGB:
+				speed_mult = 0.01 * proportion
+			if stage == TP_AGB:
+				speed_mult = 0.0005 * proportion
+					
+		if stage >= He_WD:
+			
+			if general_idx >= speed_idx:
+				speed_mult = 1
+			else:
+				speed_mult = 0.01 * proportion
+
 	if sim_parent.pause_sim_at_age:
 		var percent:float = sim_parent.config_star_age * 0.1
 		
 		if get_age() >= sim_parent.config_star_age - percent:
-			speed_mult = move_toward(speed_mult, 0.1, 0.15 * delta)
+			speed_mult = move_toward(speed_mult * proportion, 0.1, 0.15 * delta)
 	else:
 		if post_pause:
 			speed_mult = 1
 			post_pause = false
-
-var post_pause:bool = true
-var general_idx = 0
-var initial_diff = sim_data[2][1] - sim_data[2][0]
-var frac = 1
-var max_idx = sim_data[2].size() - 1
 
 func advance_age(delta):
 	var prev_age = sim_data[2][general_idx]
@@ -110,21 +121,24 @@ func advance_age(delta):
 	else:
 		next_age = sim_data[2][general_idx + 1]
 	
-	var diff = next_age - prev_age
+	ydiff = next_age - prev_age
 	
-	if diff == 0:
+	if ydiff == 0:
 		general_idx += 1
 		return
+
 	# hopefully it wont tweak out or smth
 	
-	frac = initial_diff / diff
+	frac = initial_diff / ydiff
 	
-	age += (diff * delta) * frac * speed_mult
+	#prints(diff, frac, speed_mult, initial_diff)
+	
+	age += (ydiff * delta) * frac * speed_mult
 
 	if age >= next_age:
 		age = next_age
 		if age >= sim_data[2][max_idx]:
-			diff = 0
+			ydiff = 0
 		else:
 			general_idx += 1
 
@@ -257,7 +271,7 @@ func _on_simulation_transmit_star_data(data: Array, star_name: String) -> void:
 	stage = data[1][0]
 	age = data[2][0]
 	temperature = data[6][0]
-	init_temp = data[6][0]
+	#init_temp = data[6][0]
 	luminosity = data[4][0]
 	mass = data[3][0]
 	radius = data[5][0]
